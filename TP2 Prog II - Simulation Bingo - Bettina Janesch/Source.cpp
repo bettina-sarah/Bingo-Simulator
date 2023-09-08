@@ -4,19 +4,32 @@
 
 using namespace std;
 
+struct BouleBingo_s
+{
+	string Lettre;
+	int Numero;
+};
+
+string LettreBingo[5] = { "B", "I", "N", "G", "O" };
+
 void AffichageMenu();
+void BoulierInitial(BouleBingo_s tab[], const int taille);
+
+
+const int NumeroBoules = 75;
+
+BouleBingo_s Boulier[NumeroBoules];
+BouleBingo_s BoulesTires[NumeroBoules];
+
 
 void main(void)
 {
-
 	setlocale(LC_CTYPE, "fr-CA");
 
-	AffichageMenu();
-
+	// AffichageMenu();
+	BoulierInitial(Boulier, NumeroBoules);
 }
 	
-
-
 void AffichageMenu()
 {
 	char OptionMenu;
@@ -50,3 +63,37 @@ void AffichageMenu()
 	}
 	while (OptionMenu != 'Q');
 }	
+
+void BoulierInitial(BouleBingo_s tab[], const int taille)
+{
+	for (int i = 0; i < taille; i++)
+	{
+		if (i < 15)
+		{
+			Boulier[i] = { LettreBingo[0], i + 1 };
+		}
+		else if (i >= 15 && i < 30)
+		{
+			Boulier[i] = { LettreBingo[1], i + 1 };
+		}
+		else if (i >= 30 && i < 46)
+		{
+			Boulier[i] = { LettreBingo[2], i + 1 };
+		}
+		else if (i >= 46 && i < 60)
+		{
+			Boulier[i] = { LettreBingo[3], i + 1 };
+		}
+		else if (i >= 60 && i <= 75)
+		{
+			Boulier[i] = { LettreBingo[4], i + 1 };
+		}
+	}
+
+	cout << "\n\nBOULIER\n\n";
+	for (int i = 0; i < taille; i++)
+	{
+		cout << Boulier[i].Lettre << Boulier[i].Numero << " ";
+	}
+
+}
