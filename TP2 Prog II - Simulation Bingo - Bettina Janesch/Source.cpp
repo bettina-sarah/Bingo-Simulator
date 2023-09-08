@@ -15,11 +15,12 @@ string LettreBingo[5] = { "B", "I", "N", "G", "O" };
 const int NumeroBoules = 75;
 
 BouleBingo_s Boulier[NumeroBoules];
-BouleBingo_s BoulesTirees[NumeroBoules];
+BouleBingo_s BoulesApresTirage[NumeroBoules];
 
 void AffichageMenu();
 void BoulierInitial(BouleBingo_s tab[], const int taille);
 void AfficherBoulier(BouleBingo_s tab[], const int taille);
+void BoulesTirees(BouleBingo_s tab[], const int taille);
 
 void main(void)
 {
@@ -29,6 +30,8 @@ void main(void)
 	BoulierInitial(Boulier, NumeroBoules);
 	AfficherBoulier(Boulier, NumeroBoules);
 
+	BoulesTirees(BoulesApresTirage, NumeroBoules);
+	AfficherBoulier(BoulesApresTirage, NumeroBoules);
 }
 	
 void AffichageMenu()
@@ -97,13 +100,15 @@ void AfficherBoulier(BouleBingo_s tab[], const int taille)
 	cout << "\n\nBOULIER\n\n";
 	for (int i = 0; i < taille; i++)
 	{
-		cout << Boulier[i].Lettre << Boulier[i].Numero << " ";
+		cout << tab[i].Lettre << tab[i].Numero << " ";
 	}
 }
 
-
-
-//6.	Créez une fonction qui initialise le tableau de boules tirées jusqu’à maintenant : (75 bulles nulles au début)
-//•	Accepte en paramètre un tableau de boules de bingo et une taille de tableau
-//•	Ne retourne rien
-//•	Insère une boule « nulle » dans tous les éléments du tableau(utilisez une boucle)
+void BoulesTirees(BouleBingo_s tab[], const int taille)
+{
+	for (int i = 0; i < taille; i++)
+	{
+		tab[i].Lettre = " ";
+		tab[i].Numero = 0;
+	}
+}
