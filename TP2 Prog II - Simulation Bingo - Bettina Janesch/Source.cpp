@@ -26,12 +26,12 @@ void main(void)
 {
 	setlocale(LC_CTYPE, "fr-CA");
 
-	//AffichageMenu();
-	BoulierInitial(Boulier, NumeroBoules);
-	AfficherBoulier(Boulier, NumeroBoules);
+	AffichageMenu();
+	//BoulierInitial(Boulier, NumeroBoules);
+	//AfficherBoulier(Boulier, NumeroBoules);
 
-	BoulesTirees(BoulesApresTirage, NumeroBoules);
-	AfficherBoulier(BoulesApresTirage, NumeroBoules);
+	//BoulesTirees(BoulesApresTirage, NumeroBoules);
+	//AfficherBoulier(BoulesApresTirage, NumeroBoules);
 }
 	
 void AffichageMenu()
@@ -42,7 +42,14 @@ void AffichageMenu()
 		system("cls");
 		cout << "*********************************************    MENU    **************************************************"
 			"\n***\t\t\tT - Tirer un numéro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
-			"\n***********************************************************************************************************";
+			"\n***********************************************************************************************************\n\n";
+		BoulierInitial(Boulier, NumeroBoules);
+		AfficherBoulier(Boulier, NumeroBoules);
+		cout << "\n\n"
+			"TIRAGE DE LA BOULE:\n0"
+			"\n\nBOULES DÈJÀ TIRÉES";
+
+
 		cin >> OptionMenu;
 		OptionMenu = toupper(OptionMenu);
 		switch (OptionMenu)
@@ -63,7 +70,6 @@ void AffichageMenu()
 		case 'Q':
 			_getch();
 		}
-
 	}
 	while (OptionMenu != 'Q');
 }	
@@ -112,3 +118,5 @@ void BoulesTirees(BouleBingo_s tab[], const int taille)
 		tab[i].Numero = 0;
 	}
 }
+
+
