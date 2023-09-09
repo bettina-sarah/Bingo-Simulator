@@ -10,6 +10,13 @@ struct BouleBingo_s
 	int Numero;
 };
 
+
+struct CaseCarte_s
+{
+	bool Etat;
+	BouleBingo_s BouleCarte;
+};
+
 string LettreBingo[5] = { "B", "I", "N", "G", "O" };
 
 const int NumeroBoules = 75;
@@ -17,21 +24,28 @@ const int NumeroBoules = 75;
 BouleBingo_s Boulier[NumeroBoules];
 BouleBingo_s BoulesApresTirage[NumeroBoules];
 
+CaseCarte_s CarteBingo[5][5];
+
 void AffichageMenu();
 void BoulierInitial(BouleBingo_s tab[], const int taille);
 void AfficherBoulier(BouleBingo_s tab[], const int taille);
 void BoulesTirees(BouleBingo_s tab[], const int taille);
+void CarteInitiale(CaseCarte_s matrice[5][5]);
+void AfficherCarte(CaseCarte_s matrice[5][5]);
+
 
 void main(void)
 {
 	setlocale(LC_CTYPE, "fr-CA");
 
-	AffichageMenu();
+	//AffichageMenu();
 	//BoulierInitial(Boulier, NumeroBoules);
 	//AfficherBoulier(Boulier, NumeroBoules);
 
 	//BoulesTirees(BoulesApresTirage, NumeroBoules);
 	//AfficherBoulier(BoulesApresTirage, NumeroBoules);
+	CarteInitiale(CarteBingo);
+	AfficherCarte(CarteBingo);
 }
 	
 void AffichageMenu()
@@ -42,7 +56,7 @@ void AffichageMenu()
 		system("cls");
 		cout << "*********************************************    MENU    **************************************************"
 			"\n***\t\t\tT - Tirer un numéro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
-			"\n***********************************************************************************************************\n\n";
+			"\n***********************************************************************************************************\n";
 		BoulierInitial(Boulier, NumeroBoules);
 		AfficherBoulier(Boulier, NumeroBoules);
 		cout << "\n\n"
@@ -119,4 +133,76 @@ void BoulesTirees(BouleBingo_s tab[], const int taille)
 	}
 }
 
+void CarteInitiale(CaseCarte_s matrice[5][5])
+{
+	int NumeroB = 11;
+	int NumeroI = 16;
+	int NumeroN = 31;
+	int NumeroG = 46;
+	int NumeroO = 61;
+	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
+	{
+		for (int ligne = 0; ligne < 5; ligne++) // ligne 0,1,2,3,4
+		{
+			if (colonne == 0) //B - 11-15 (tab 10-14)
+			{
+				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[0];
+				matrice[colonne][ligne].BouleCarte.Numero = NumeroB;
+				matrice[colonne][ligne].Etat = false;
+				NumeroB++;
+			}
+			else if (colonne == 1) //I - 16-20 (tab 15-19)
+			{
+				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[1];
+				matrice[colonne][ligne].BouleCarte.Numero = NumeroI;
+				matrice[colonne][ligne].Etat = false;
+				NumeroI++;
+			}
+			else if (colonne == 2) //N - 31-35 (tab 30-34)
+			{
+				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[2];
+				matrice[colonne][ligne].BouleCarte.Numero = NumeroN;
+				matrice[colonne][ligne].Etat = false;
+				NumeroN++;
+			}
+			else if (colonne == 3) //G - 46-50 (tab 45-49)
+			{
+				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[3];
+				matrice[colonne][ligne].BouleCarte.Numero = NumeroG;
+				matrice[colonne][ligne].Etat = false;
+				NumeroG++;
+			}
+			else if (colonne == 4) //O - 61-65 (tab 60-64)
+			{
+				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[4];
+				matrice[colonne][ligne].BouleCarte.Numero = NumeroO;
+				matrice[colonne][ligne].Etat = false;
+				NumeroO++;
+			}
+		}
+	}
+}
+
+void AfficherCarte(CaseCarte_s matrice[5][5])
+{
+	cout << "\n\n\n=====================================\n"
+		"||  B  ||  I  ||  N  ||  G  ||  O  ||";
+	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
+	{
+		for (int ligne = 0; ligne < 5; ligne++) // ligne 0,1,2,3,4
+		{
+			if (ligne == 0)
+			{
+				cout << "||";
+				cout<<"\n=====================================";
+				cout << "\n";
+				cout << "|| "<<matrice[colonne][ligne].BouleCarte.Numero << "  ";
+			}
+			else
+			{
+				cout << "|| " << matrice[colonne][ligne].BouleCarte.Numero << "  ";
+			}
+		}
+	}
+}
 
