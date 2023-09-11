@@ -25,22 +25,32 @@ const int NumeroBoules = 75;
 BouleBingo_s Boulier[NumeroBoules];
 BouleBingo_s BoulesApresTirage[NumeroBoules];
 
+int BoulesRestantsBoulier = NumeroBoules;
+int BoulesDejaTirees;
+
 CaseCarte_s CarteBingo[5][5];
 
 void AffichageMenu();
-void BoulierInitial(BouleBingo_s tab[], const int taille);
-void AfficherBoulier(BouleBingo_s tab[], const int taille);
-void BoulesTirees(BouleBingo_s tab[], const int taille);
-void CarteInitiale(CaseCarte_s matrice[5][5]);
-void AfficherCarte(CaseCarte_s matrice[5][5]);
-int BoulierHasard(int NombreMaximum);
-
+void BoulierInitial(BouleBingo_s tab[], const int taille); // boulier plein
+void AfficherBoulier(BouleBingo_s tab[], const int taille); // affiche le boulier plein qui se vide avec chaquE tirage
+void BoulesTirees(BouleBingo_s tab[], const int taille); // tableau initial vide qui se remplit avec chaque tirage
+void CarteInitiale(CaseCarte_s matrice[5][5]); // carte initiale
+void AfficherCarte(CaseCarte_s matrice[5][5]); // affiche matrice 5x5 nouvelle
+int BoulierHasard(int &NombreMaximum); // pige numéro au hasard (max 75; apres ca descend)
+BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve); //Réarrange Boulier; boule est retirée; renvoyé a la fin du tableau et initialiser comme 0
 
 void main(void)
 {
 	setlocale(LC_CTYPE, "fr-CA");
 
-	AffichageMenu();
+	//AffichageMenu();
+
+	BoulierInitial(Boulier, NumeroBoules);
+	AfficherBoulier(Boulier, NumeroBoules);
+	RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));// indice random trouve = fonction Boulier Hasard
+	AfficherBoulier(Boulier, NumeroBoules);
+
+	
 }
 	
 void AffichageMenu()
@@ -56,7 +66,7 @@ void AffichageMenu()
 		AfficherBoulier(Boulier, NumeroBoules);
 		cout << "\n\n"
 			"TIRAGE DE LA BOULE:\n";
-		cout << Boulier[]
+		//cout << Boulier[]
 			"\n\nBOULES DÈJÀ TIRÉES\n";
 		CarteInitiale(CarteBingo);
 		AfficherCarte(CarteBingo);
@@ -206,10 +216,20 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 
 }
 
-int BoulierHasard(int NombreMaximum)
+int BoulierHasard(int &NombreMaximum) // decrementer NombreMaximum pas ICI car tu veux conserver nbmax et decrementer dans une 
 {
+	int x = 0;
 	srand(time(NULL));
-	int x = (rand() % (NombreMaximum + 1));
+	x = (rand() % (NombreMaximum + 1));
 	return x;
 }
 
+BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve)
+{
+	BouleBingo_s Temp = tab[IndiceRandomtrouve];
+	tab[IndiceRandomtrouve] = tab[BoulesRestantsBoulier-1]; //-1 car tab[75] existe pas
+	tab[BoulesRestantsBoulier-1].Lettre = " ";
+	tab[BoulesRestantsBoulier-1].Numero = 0;
+	cout << Temp.Lettre << Temp.Numero;
+	return Temp;
+}
