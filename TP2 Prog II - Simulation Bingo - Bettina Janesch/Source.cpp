@@ -234,10 +234,14 @@ int BoulierHasard(int &NombreMaximum) // decrementer NombreMaximum pas ICI car t
 
 BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve)
 {
-	BouleBingo_s Temp = tab[IndiceRandomtrouve];
-	tab[IndiceRandomtrouve] = tab[BoulesRestantsBoulier-1]; //-1 car tab[75] existe pas
-	tab[BoulesRestantsBoulier-1].Lettre = " ";
-	tab[BoulesRestantsBoulier-1].Numero = 0;
+	BouleBingo_s Temp = tab[IndiceRandomtrouve];//-1 car tab[75] existe pas
+	tab[IndiceRandomtrouve].Lettre = " ";
+	tab[IndiceRandomtrouve].Numero = 0;
+	for (int i = IndiceRandomtrouve; i < BoulesRestantsBoulier; i++)
+	{
+		tab[i] = tab[i + 1];
+
+	}
 	cout << Temp.Lettre << Temp.Numero;
 	BoulesRestantsBoulier--; // decrementer a 74, 73 ... etc
 	return Temp;
