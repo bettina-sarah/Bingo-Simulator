@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h> // system cls
 #include <conio.h> // getch
+#include <random> // rand fonc
 
 using namespace std;
 
@@ -32,20 +33,14 @@ void AfficherBoulier(BouleBingo_s tab[], const int taille);
 void BoulesTirees(BouleBingo_s tab[], const int taille);
 void CarteInitiale(CaseCarte_s matrice[5][5]);
 void AfficherCarte(CaseCarte_s matrice[5][5]);
+int BoulierHasard(int NombreMaximum);
 
 
 void main(void)
 {
 	setlocale(LC_CTYPE, "fr-CA");
 
-	//AffichageMenu();
-	//BoulierInitial(Boulier, NumeroBoules);
-	//AfficherBoulier(Boulier, NumeroBoules);
-
-	//BoulesTirees(BoulesApresTirage, NumeroBoules);
-	//AfficherBoulier(BoulesApresTirage, NumeroBoules);
-	CarteInitiale(CarteBingo);
-	AfficherCarte(CarteBingo);
+	AffichageMenu();
 }
 	
 void AffichageMenu()
@@ -60,9 +55,11 @@ void AffichageMenu()
 		BoulierInitial(Boulier, NumeroBoules);
 		AfficherBoulier(Boulier, NumeroBoules);
 		cout << "\n\n"
-			"TIRAGE DE LA BOULE:\n0"
-			"\n\nBOULES DÈJÀ TIRÉES";
-
+			"TIRAGE DE LA BOULE:\n";
+		cout << Boulier[]
+			"\n\nBOULES DÈJÀ TIRÉES\n";
+		CarteInitiale(CarteBingo);
+		AfficherCarte(CarteBingo);
 
 		cin >> OptionMenu;
 		OptionMenu = toupper(OptionMenu);
@@ -140,9 +137,9 @@ void CarteInitiale(CaseCarte_s matrice[5][5])
 	int NumeroN = 31;
 	int NumeroG = 46;
 	int NumeroO = 61;
-	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
+	for (int ligne = 0; ligne < 5; ligne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
 	{
-		for (int ligne = 0; ligne < 5; ligne++) // ligne 0,1,2,3,4
+		for (int colonne = 0; colonne < 5; colonne++) // ligne 0,1,2,3,4
 		{
 			if (colonne == 0) //B - 11-15 (tab 10-14)
 			{
@@ -186,7 +183,7 @@ void CarteInitiale(CaseCarte_s matrice[5][5])
 void AfficherCarte(CaseCarte_s matrice[5][5])
 {
 	cout << "\n\n\n=====================================\n"
-		"||  B  ||  I  ||  N  ||  G  ||  O  ||";
+		"||  B  ||  I  ||  N  ||  G  ||  O  ";
 	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
 	{
 		for (int ligne = 0; ligne < 5; ligne++) // ligne 0,1,2,3,4
@@ -204,5 +201,15 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 			}
 		}
 	}
+	cout << "||"
+	"\n=====================================";
+
+}
+
+int BoulierHasard(int NombreMaximum)
+{
+	srand(time(NULL));
+	int x = (rand() % (NombreMaximum + 1));
+	return x;
 }
 
