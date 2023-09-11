@@ -21,12 +21,12 @@ struct CaseCarte_s
 string LettreBingo[5] = { "B", "I", "N", "G", "O" };
 
 const int NumeroBoules = 75;
+int BoulesRestantsBoulier = NumeroBoules; // variable qui change apres chaque tirage (75,74, ... )
+int BoulesDejaTirees = 0; // variable qui augmente chaque tirage - 0,1,2)
 
 BouleBingo_s Boulier[NumeroBoules];
 BouleBingo_s BoulesApresTirage[NumeroBoules];
 
-int BoulesRestantsBoulier = NumeroBoules;
-int BoulesDejaTirees;
 
 CaseCarte_s CarteBingo[5][5];
 
@@ -38,6 +38,9 @@ void CarteInitiale(CaseCarte_s matrice[5][5]); // carte initiale
 void AfficherCarte(CaseCarte_s matrice[5][5]); // affiche matrice 5x5 nouvelle
 int BoulierHasard(int &NombreMaximum); // pige numéro au hasard (max 75; apres ca descend)
 BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve); //Réarrange Boulier; boule est retirée; renvoyé a la fin du tableau et initialiser comme 0
+void AjouterBouleBingo(BouleBingo_s tab[], int DejaTire, BouleBingo_s BingoPourAjouter);
+
+
 
 void main(void)
 {
@@ -46,11 +49,12 @@ void main(void)
 	//AffichageMenu();
 
 	BoulierInitial(Boulier, NumeroBoules);
-	AfficherBoulier(Boulier, NumeroBoules);
-	RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));// indice random trouve = fonction Boulier Hasard
-	AfficherBoulier(Boulier, NumeroBoules);
+	//AfficherBoulier(Boulier, NumeroBoules);
+	BouleBingo_s BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));// indice random trouve = fonction Boulier Hasard
+	//AfficherBoulier(Boulier, NumeroBoules);
+	AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
+	AfficherBoulier(BoulesApresTirage, NumeroBoules);
 
-	
 }
 	
 void AffichageMenu()
@@ -221,6 +225,7 @@ int BoulierHasard(int &NombreMaximum) // decrementer NombreMaximum pas ICI car t
 	int x = 0;
 	srand(time(NULL));
 	x = (rand() % (NombreMaximum + 1));
+
 	return x;
 }
 
@@ -231,5 +236,12 @@ BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceR
 	tab[BoulesRestantsBoulier-1].Lettre = " ";
 	tab[BoulesRestantsBoulier-1].Numero = 0;
 	cout << Temp.Lettre << Temp.Numero;
+	BoulesRestantsBoulier--; // decrementer a 74, 73 ... etc
 	return Temp;
+}
+
+void AjouterBouleBingo(BouleBingo_s tab[], int DejaTire, BouleBingo_s BingoPourAjouter)
+{
+	tab[DejaTire] = BingoPourAjouter;
+	DejaTire++; // commence a 0, incremente
 }
