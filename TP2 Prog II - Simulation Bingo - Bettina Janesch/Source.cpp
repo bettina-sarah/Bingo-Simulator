@@ -26,6 +26,7 @@ int BoulesDejaTirees = 0; // variable qui augmente chaque tirage - 0,1,2)
 
 BouleBingo_s Boulier[NumeroBoules];
 BouleBingo_s BoulesApresTirage[NumeroBoules];
+BouleBingo_s BouleChoisi;
 
 
 CaseCarte_s CarteBingo[5][5];
@@ -38,7 +39,7 @@ void CarteInitiale(CaseCarte_s matrice[5][5]); // carte initiale
 void AfficherCarte(CaseCarte_s matrice[5][5]); // affiche matrice 5x5 nouvelle
 int BoulierHasard(int &NombreMaximum); // pige numéro au hasard (max 75; apres ca descend)
 BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve); //Réarrange Boulier; boule est retirée; renvoyé a la fin du tableau et initialiser comme 0
-void AjouterBouleBingo(BouleBingo_s tab[], int DejaTire, BouleBingo_s BingoPourAjouter);
+void AjouterBouleBingo(BouleBingo_s tab[], int &DejaTire, BouleBingo_s BingoPourAjouter);
 
 
 
@@ -46,43 +47,19 @@ void main(void)
 {
 	setlocale(LC_CTYPE, "fr-CA");
 
-	//AffichageMenu();
-
-	BoulierInitial(Boulier, NumeroBoules);
-	//AfficherBoulier(Boulier, NumeroBoules);
-	BouleBingo_s BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));// indice random trouve = fonction Boulier Hasard
-	//AfficherBoulier(Boulier, NumeroBoules);
-	AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
-	AfficherBoulier(BoulesApresTirage, NumeroBoules);
-
-}
-	
-void AffichageMenu()
-{
 	char OptionMenu;
+	BoulierInitial(Boulier, NumeroBoules);
+	BoulesTirees(BoulesApresTirage, NumeroBoules);
 	do
 	{
-		system("cls");
-		cout << "*********************************************    MENU    **************************************************"
-			"\n***\t\t\tT - Tirer un numéro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
-			"\n***********************************************************************************************************\n";
-		BoulierInitial(Boulier, NumeroBoules);
-		AfficherBoulier(Boulier, NumeroBoules);
-		cout << "\n\n"
-			"TIRAGE DE LA BOULE:\n";
-		//cout << Boulier[]
-			"\n\nBOULES DÈJÀ TIRÉES\n";
-		CarteInitiale(CarteBingo);
-		AfficherCarte(CarteBingo);
-
+		AffichageMenu();
 		cin >> OptionMenu;
 		OptionMenu = toupper(OptionMenu);
 		switch (OptionMenu)
 		{
 		case 'T': 
-			// call fonc tirage
-			system("cls");
-			cout << "Tirage";
+			BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));
+			AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
 			_getch();
 			break;
 		case 'B':
@@ -97,6 +74,33 @@ void AffichageMenu()
 		}
 	}
 	while (OptionMenu != 'Q');
+
+	//BoulierInitial(Boulier, NumeroBoules);
+	//AfficherBoulier(Boulier, NumeroBoules);
+	//BouleBingo_s BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));// indice random trouve = fonction Boulier Hasard
+	//AfficherBoulier(Boulier, NumeroBoules);
+	//AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
+	//AfficherBoulier(BoulesApresTirage, NumeroBoules);
+
+}
+	
+void AffichageMenu()
+{
+	system("cls");
+	cout << "*********************************************    MENU    **************************************************"
+		"\n***\t\t\tT - Tirer un numéro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
+		"\n***********************************************************************************************************\n";
+	
+	cout << "BOULIER\n\n";
+	AfficherBoulier(Boulier, BoulesRestantsBoulier);
+	cout << "\n\n"
+		"TIRAGE DE LA BOULE:\n";
+	cout << BouleChoisi.Lettre << BouleChoisi.Numero;
+	cout << "\n\nBOULES DÈJÀ TIRÉES\n";
+	
+	AfficherBoulier(BoulesApresTirage, NumeroBoules);
+	CarteInitiale(CarteBingo);
+	AfficherCarte(CarteBingo);
 }	
 
 void BoulierInitial(BouleBingo_s tab[], const int taille)
@@ -128,7 +132,6 @@ void BoulierInitial(BouleBingo_s tab[], const int taille)
 
 void AfficherBoulier(BouleBingo_s tab[], const int taille)
 {
-	cout << "\n\nBOULIER\n\n";
 	for (int i = 0; i < taille; i++)
 	{
 		cout << tab[i].Lettre << tab[i].Numero << " ";
@@ -240,7 +243,7 @@ BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceR
 	return Temp;
 }
 
-void AjouterBouleBingo(BouleBingo_s tab[], int DejaTire, BouleBingo_s BingoPourAjouter)
+void AjouterBouleBingo(BouleBingo_s tab[], int &DejaTire, BouleBingo_s BingoPourAjouter)
 {
 	tab[DejaTire] = BingoPourAjouter;
 	DejaTire++; // commence a 0, incremente
