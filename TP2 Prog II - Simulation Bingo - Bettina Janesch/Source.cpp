@@ -47,6 +47,7 @@ void main(void)
 	char OptionMenu;
 	BoulierInitial(Boulier, NumeroBoules);
 	BoulesTirees(BoulesApresTirage, NumeroBoules);
+	CarteInitiale(CarteBingo);
 	do
 	{
 		AffichageMenu();
@@ -58,17 +59,17 @@ void main(void)
 			BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));
 			AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
 			TrouverBouleSurCarte(BouleChoisi, CarteBingo);
-			_getch();
+			_getche();
 			break;
 		case 'B':
 			system("cls");
 			cout << "\n\n*****************"
 					"\n*** BINGO !!! ***"
 					"\n*****************";
-			_getch();
+			_getche();
 			break;
 		case 'Q':
-			_getch();
+			_getche();
 		}
 	} while (OptionMenu != 'Q');
 
@@ -84,7 +85,7 @@ void AffichageMenu()
 {
 	system("cls");
 	cout << "*********************************************    MENU    **************************************************"
-			"\n***\t\t\tT - Tirer un num�ro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
+			"\n***\t\t\tT - Tirer un numéro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
 			"\n***********************************************************************************************************\n";
 
 	cout << "BOULIER\n\n";
@@ -92,10 +93,9 @@ void AffichageMenu()
 	cout << "\n\n"
 			"TIRAGE DE LA BOULE:\n";
 	cout << BouleChoisi.Lettre << BouleChoisi.Numero;
-	cout << "\n\nBOULES D�J� TIR�ES\n";
+	cout << "\n\nBOULES DÉJÀ TIRÉES\n";
 
 	AfficherBoulier(BoulesApresTirage, NumeroBoules);
-	CarteInitiale(CarteBingo);
 	AfficherCarte(CarteBingo);
 }
 
@@ -143,46 +143,46 @@ void BoulesTirees(BouleBingo_s tab[], const int taille)
 	}
 }
 
-void CarteInitiale(CaseCarte_s matrice[5][5])
+void CarteInitiale(CaseCarte_s matrice[5][5]) 
 {
 	int NumeroB = 11;
 	int NumeroI = 16;
 	int NumeroN = 31;
 	int NumeroG = 46;
 	int NumeroO = 61;
-	for (int ligne = 0; ligne < 5; ligne++)
+	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
 	{
-		for (int colonne = 0; colonne < 5; colonne++)
+		for (int ligne = 0; ligne < 5; ligne++) // ligne 0,1,2,3,4
 		{
-			if (colonne == 0) // B - 11-15 (tab 10-14)
+			if (colonne == 0) //B - 11-15 (tab 10-14)
 			{
 				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[0];
 				matrice[colonne][ligne].BouleCarte.Numero = NumeroB;
 				matrice[colonne][ligne].Etat = false;
 				NumeroB++;
 			}
-			else if (colonne == 1) // I - 16-20 (tab 15-19)
+			else if (colonne == 1) //I - 16-20 (tab 15-19)
 			{
 				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[1];
 				matrice[colonne][ligne].BouleCarte.Numero = NumeroI;
 				matrice[colonne][ligne].Etat = false;
 				NumeroI++;
 			}
-			else if (colonne == 2) // N - 31-35 (tab 30-34)
+			else if (colonne == 2) //N - 31-35 (tab 30-34)
 			{
 				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[2];
 				matrice[colonne][ligne].BouleCarte.Numero = NumeroN;
 				matrice[colonne][ligne].Etat = false;
 				NumeroN++;
 			}
-			else if (colonne == 3) // G - 46-50 (tab 45-49)
+			else if (colonne == 3) //G - 46-50 (tab 45-49)
 			{
 				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[3];
 				matrice[colonne][ligne].BouleCarte.Numero = NumeroG;
 				matrice[colonne][ligne].Etat = false;
 				NumeroG++;
 			}
-			else if (colonne == 4) // O - 61-65 (tab 60-64)
+			else if (colonne == 4) //O - 61-65 (tab 60-64)
 			{
 				matrice[colonne][ligne].BouleCarte.Lettre = LettreBingo[4];
 				matrice[colonne][ligne].BouleCarte.Numero = NumeroO;
@@ -191,12 +191,60 @@ void CarteInitiale(CaseCarte_s matrice[5][5])
 			}
 		}
 	}
+	//int NumeroB = 11;
+	//int NumeroI = 16;
+	//int NumeroN = 31;
+	//int NumeroG = 46;
+	//int NumeroO = 61;
+	//for (int ligne = 0; ligne < 5; ligne++)
+	//{
+	//	for (int colonne = 0; colonne < 5; colonne++)
+	//	{
+	//		if (colonne == 0) // B - 11-15 (tab 10-14)
+	//		{
+	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[0];
+	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroB;
+	//			matrice[ligne][colonne].Etat = false;
+	//			NumeroB++;
+	//		}
+	//		else if (colonne == 1) // I - 16-20 (tab 15-19)
+	//		{
+	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[1];
+	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroI;
+	//			matrice[ligne][colonne].Etat = false;
+	//			NumeroI++;
+	//		}
+	//		else if (colonne == 2) // N - 31-35 (tab 30-34)
+	//		{
+	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[2];
+	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroN;
+	//			matrice[ligne][colonne].Etat = false;
+	//			NumeroN++;
+	//		}
+	//		else if (colonne == 3) // G - 46-50 (tab 45-49)
+	//		{
+	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[3];
+	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroG;
+	//			matrice[ligne][colonne].Etat = false;
+	//			NumeroG++;
+	//		}
+	//		else if (colonne == 4) // O - 61-65 (tab 60-64)
+	//		{
+	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[4];
+	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroO;
+	//			matrice[ligne][colonne].Etat = false;
+	//			NumeroO++;
+	//		}
+	//	}
+	//}
 }
 
 void AfficherCarte(CaseCarte_s matrice[5][5])
 {
+	matrice[0][0].Etat = true;
+	cout << matrice[0][0].BouleCarte.Lettre << matrice[0][0].BouleCarte.Numero << "True? " << (bool)matrice[0][0].Etat;
 	cout << "\n\n\n=====================================\n"
-			"||  B  ||  I  ||  N  ||  G  ||  O  ";
+		"||  B  ||  I  ||  N  ||  G  ||  O  ";
 	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
 	{
 		for (int ligne = 0; ligne < 5; ligne++) // ligne 0,1,2,3,4
@@ -204,19 +252,44 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 			if (ligne == 0)
 			{
 				cout << "||";
-				cout << "\n=====================================";
+				cout<<"\n=====================================";
 				cout << "\n";
 			}
-			if (matrice[colonne][ligne].Etat == true)
-			{
-				cout << "|| *" << matrice[colonne][ligne].BouleCarte.Numero << "  ";
+			if (matrice[ligne][colonne].Etat == true)
+						{
+							cout << "|| *" << matrice[ligne][colonne].BouleCarte.Numero << "  ";
 			}
+
 			else
-				cout << "|| " << matrice[colonne][ligne].BouleCarte.Numero << "  ";
+			{
+				cout << "|| " << matrice[ligne][colonne].BouleCarte.Numero << "  ";
+			}
 		}
 	}
-	cout << "||"
-			"\n=====================================";
+
+	//cout << "\n\n\n=====================================\n"
+	//		"||  B  ||  I  ||  N  ||  G  ||  O  ||"
+	//	"\n===================================";
+	//for (int ligne = 0; ligne < 5; ligne++) // ligne 0: col 0,1,2,3,4
+	//{
+	//	for (int colonne = 0; colonne < 5; colonne++)
+	//	{
+	//		if (ligne == 0)
+	//		{
+	//			cout << "||";
+	//			//cout << "\n=====================================";
+	//			cout << "\n";
+	//		}
+	//		if (matrice[ligne][colonne].Etat == true)
+	//		{
+	//			cout << "|| *" << matrice[ligne][colonne].BouleCarte.Numero << "  ";
+	//		}
+	//		else
+	//			cout << "|| " << matrice[ligne][colonne].BouleCarte.Numero << "  ";
+	//	}
+	//}
+	//cout << "||"
+	//		"\n=====================================";
 }
 
 int BoulierHasard(int &NombreMaximum) // decrementer NombreMaximum pas ICI car tu veux conserver nbmax et decrementer dans une
@@ -243,7 +316,7 @@ BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceR
 			tab[i] = tab[i + 1];
 		}
 	}
-	cout << Temp.Lettre << Temp.Numero;
+	//cout << Temp.Lettre << Temp.Numero;
 	BoulesRestantsBoulier--; // decrementer a 74, 73 ... etc
 	return Temp;
 }
@@ -262,7 +335,9 @@ void TrouverBouleSurCarte(BouleBingo_s BouleVraie, CaseCarte_s matrice[5][5]) //
 		{
 			if (matrice[ligne][colonne].BouleCarte.Lettre == BouleVraie.Lettre && matrice[ligne][colonne].BouleCarte.Numero == BouleVraie.Numero) // si item trouve dans matrice, tamponner
 			{
+				
 				matrice[ligne][colonne].Etat = true;
+				cout << "TEST SI BOULE EST TROUVE SUR CARTE " << matrice[ligne][colonne].BouleCarte.Lettre << matrice[ligne][colonne].BouleCarte.Numero << matrice[ligne][colonne].Etat;
 			}
 		}
 	}
