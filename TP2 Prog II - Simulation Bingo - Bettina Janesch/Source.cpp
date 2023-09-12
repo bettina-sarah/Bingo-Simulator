@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h> // system cls
-#include <curses.h> // getch
+#include <conio.h>	// getch
 #include <random>	// rand fonc
 
 using namespace std;
@@ -38,6 +38,7 @@ void AfficherCarte(CaseCarte_s matrice[5][5]);												  // affiche matrice 5
 int BoulierHasard(int &NombreMaximum);														  // pige num�ro au hasard (max 75; apres ca descend)
 BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve); // R�arrange Boulier; boule est retir�e; renvoy� a la fin du tableau et initialiser comme 0
 void AjouterBouleBingo(BouleBingo_s tab[], int &DejaTire, BouleBingo_s BingoPourAjouter);
+void TrouverBouleSurCarte(BouleBingo_s BouleVraie, CaseCarte_s matrice[5][5]);
 
 void main(void)
 {
@@ -56,6 +57,7 @@ void main(void)
 		case 'T':
 			BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));
 			AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
+			TrouverBouleSurCarte(BouleChoisi, CarteBingo);
 			_getch();
 			break;
 		case 'B':
@@ -148,9 +150,9 @@ void CarteInitiale(CaseCarte_s matrice[5][5])
 	int NumeroN = 31;
 	int NumeroG = 46;
 	int NumeroO = 61;
-	for (int ligne = 0; ligne < 5; ligne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
+	for (int ligne = 0; ligne < 5; ligne++)
 	{
-		for (int colonne = 0; colonne < 5; colonne++) // ligne 0,1,2,3,4
+		for (int colonne = 0; colonne < 5; colonne++)
 		{
 			if (colonne == 0) // B - 11-15 (tab 10-14)
 			{
@@ -204,12 +206,13 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 				cout << "||";
 				cout << "\n=====================================";
 				cout << "\n";
-				cout << "|| " << matrice[colonne][ligne].BouleCarte.Numero << "  ";
+			}
+			if (matrice[colonne][ligne].Etat == true)
+			{
+				cout << "|| *" << matrice[colonne][ligne].BouleCarte.Numero << "  ";
 			}
 			else
-			{
 				cout << "|| " << matrice[colonne][ligne].BouleCarte.Numero << "  ";
-			}
 		}
 	}
 	cout << "||"
@@ -228,11 +231,17 @@ int BoulierHasard(int &NombreMaximum) // decrementer NombreMaximum pas ICI car t
 BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve)
 {
 	BouleBingo_s Temp = tab[IndiceRandomtrouve]; //-1 car tab[75] existe pas
-	tab[IndiceRandomtrouve].Lettre = " ";
-	tab[IndiceRandomtrouve].Numero = 0;
 	for (int i = IndiceRandomtrouve; i < BoulesRestantsBoulier; i++)
 	{
-		tab[i] = tab[i + 1];
+		if (i == (BoulesRestantsBoulier - 1))
+		{
+			tab[i].Lettre = " ";
+			tab[i].Numero = 0;
+		}
+		else
+		{
+			tab[i] = tab[i + 1];
+		}
 	}
 	cout << Temp.Lettre << Temp.Numero;
 	BoulesRestantsBoulier--; // decrementer a 74, 73 ... etc
@@ -243,4 +252,18 @@ void AjouterBouleBingo(BouleBingo_s tab[], int &DejaTire, BouleBingo_s BingoPour
 {
 	tab[DejaTire] = BingoPourAjouter;
 	DejaTire++; // commence a 0, incremente
+}
+
+void TrouverBouleSurCarte(BouleBingo_s BouleVraie, CaseCarte_s matrice[5][5]) // A TESTER
+{
+	for (int ligne = 0; ligne < 5; ligne++) // line 0 - col 0,1,2,3,4 .. line 1-col 0,1,2,3,4...
+	{
+		for (int colonne = 0; colonne < 5; colonne++)
+		{
+			if (matrice[ligne][colonne].BouleCarte.Lettre == BouleVraie.Lettre && matrice[ligne][colonne].BouleCarte.Numero == BouleVraie.Numero) // si item trouve dans matrice, tamponner
+			{
+				matrice[ligne][colonne].Etat = true;
+			}
+		}
+	}
 }
