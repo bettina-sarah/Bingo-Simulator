@@ -48,7 +48,6 @@ void main(void)
 	CarteInitiale(CarteBingo);
 	do
 	{
-		setlocale(LC_CTYPE, "fr-CA"); 
 		AffichageMenu();
 		cin >> OptionMenu;
 		OptionMenu = toupper(OptionMenu);
@@ -60,6 +59,10 @@ void main(void)
 			cout << "TEST BOULE CHOISI: " << BouleChoisi.Lettre << BouleChoisi.Numero;
 			TrouverBouleSurCarte(BouleChoisi, CarteBingo);
 			_getch();
+			if (BoulesRestantsBoulier < 0) // pour pas afficher des cartes "fausses" dans un boulier maintenant vide, quite le programme
+			{
+				OptionMenu = 'Q';
+			}
 			break;
 		case 'B':
 			system("cls");
@@ -72,19 +75,14 @@ void main(void)
 			_getch();
 		}
 	} while (OptionMenu != 'Q');
-
-	if (BoulesRestantsBoulier < 0) // pour pas afficher des cartes "fausses" dans un boulier maintenant vide
-	{
-		_getch();
-	}
 }
 
 void AffichageMenu()
+
 {
-	setlocale(LC_CTYPE, "fr-CA");
 	system("cls");
-	cout << "*********************************************    MENU    **************************************************"
-			"\n***\t\t\tT - Tirer un numero\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
+	cout <<"*********************************************    MENU    **************************************************"
+			"\n***\t\t\tT - Tirer un num"<<char(130)<<"ro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
 			"\n***********************************************************************************************************\n";
 
 	cout << "\nBOULIER\n\n";
@@ -92,7 +90,7 @@ void AffichageMenu()
 	cout << "\n\n"
 			"TIRAGE DE LA BOULE:\n";
 	cout << BouleChoisi.Lettre << BouleChoisi.Numero;
-	cout << "\n\nBOULES DEJA TIREES\n";
+	cout << "\n\nBOULES DEJA TIR"<<char(144)<<"ES\n"; // mon setlocale langue FR marchait plus; donc je suis allé avec code ASCII
 
 	AfficherBoulier(BoulesApresTirage, BoulesDejaTirees);
 	AfficherCarte(CarteBingo);
@@ -190,52 +188,6 @@ void CarteInitiale(CaseCarte_s matrice[5][5])
 			}
 		}
 	}
-	//int NumeroB = 11;
-	//int NumeroI = 16;
-	//int NumeroN = 31;
-	//int NumeroG = 46;
-	//int NumeroO = 61;
-	//for (int ligne = 0; ligne < 5; ligne++)
-	//{
-	//	for (int colonne = 0; colonne < 5; colonne++)
-	//	{
-	//		if (colonne == 0) // B - 11-15 (tab 10-14)
-	//		{
-	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[0];
-	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroB;
-	//			matrice[ligne][colonne].Etat = false;
-	//			NumeroB++;
-	//		}
-	//		else if (colonne == 1) // I - 16-20 (tab 15-19)
-	//		{
-	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[1];
-	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroI;
-	//			matrice[ligne][colonne].Etat = false;
-	//			NumeroI++;
-	//		}
-	//		else if (colonne == 2) // N - 31-35 (tab 30-34)
-	//		{
-	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[2];
-	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroN;
-	//			matrice[ligne][colonne].Etat = false;
-	//			NumeroN++;
-	//		}
-	//		else if (colonne == 3) // G - 46-50 (tab 45-49)
-	//		{
-	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[3];
-	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroG;
-	//			matrice[ligne][colonne].Etat = false;
-	//			NumeroG++;
-	//		}
-	//		else if (colonne == 4) // O - 61-65 (tab 60-64)
-	//		{
-	//			matrice[ligne][colonne].BouleCarte.Lettre = LettreBingo[4];
-	//			matrice[ligne][colonne].BouleCarte.Numero = NumeroO;
-	//			matrice[ligne][colonne].Etat = false;
-	//			NumeroO++;
-	//		}
-	//	}
-	//}
 }
 
 void AfficherCarte(CaseCarte_s matrice[5][5])
@@ -254,7 +206,8 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 			}
 			if (matrice[ligne][colonne].Etat == true)
 			{
-				cout << "|| "<<"\033[0;95m" << matrice[ligne][colonne].BouleCarte.Numero <<"\033[0m"<< "  ";
+				cout << "|| "<<"\033[30;47m" << matrice[ligne][colonne].BouleCarte.Numero <<"\033[0m"<< "  ";
+				// les couleurs marchent pas comme dans l'enoncé, celui-la l'affice en fond blanc avec écriture noire pour ma console
 			}
 
 			else
@@ -271,8 +224,7 @@ int BoulierHasard(int &NombreMaximum)
 {
 	int x = 0;
 	srand(time(NULL));
-	x = (rand() % ((NombreMaximum-1) + 1));
-	cout <<"!!! TEST RANDOM NUMBER IS: "<< x;
+	x = (rand() % (NombreMaximum));
 	return x;
 }
 
