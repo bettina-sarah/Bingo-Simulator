@@ -19,7 +19,7 @@ struct CaseCarte_s
 
 string LettreBingo[5] = {"B", "I", "N", "G", "O"};
 
-const int NumeroBoules = 75;
+const int NumeroBoules = 75; // const size de mon tableau
 int BoulesRestantsBoulier = NumeroBoules; // variable qui change apres chaque tirage (75,74, ... )
 int BoulesDejaTirees = 0;				  // variable qui augmente chaque tirage - 0,1,2)
 
@@ -42,14 +42,13 @@ void TrouverBouleSurCarte(BouleBingo_s BouleVraie, CaseCarte_s matrice[5][5]);
 
 void main(void)
 {
-	setlocale(LC_CTYPE, "fr-CA");
-
 	char OptionMenu;
 	BoulierInitial(Boulier, NumeroBoules);
 	BoulesTirees(BoulesApresTirage, NumeroBoules);
 	CarteInitiale(CarteBingo);
 	do
 	{
+		setlocale(LC_CTYPE, "fr-CA"); 
 		AffichageMenu();
 		cin >> OptionMenu;
 		OptionMenu = toupper(OptionMenu);
@@ -58,44 +57,44 @@ void main(void)
 		case 'T':
 			BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));
 			AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
+			cout << "TEST BOULE CHOISI: " << BouleChoisi.Lettre << BouleChoisi.Numero;
 			TrouverBouleSurCarte(BouleChoisi, CarteBingo);
-			_getche();
+			_getch();
 			break;
 		case 'B':
 			system("cls");
 			cout << "\n\n*****************"
 					"\n*** BINGO !!! ***"
 					"\n*****************";
-			_getche();
+			_getch();
 			break;
 		case 'Q':
-			_getche();
+			_getch();
 		}
 	} while (OptionMenu != 'Q');
 
-	// BoulierInitial(Boulier, NumeroBoules);
-	// AfficherBoulier(Boulier, NumeroBoules);
-	// BouleBingo_s BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));// indice random trouve = fonction Boulier Hasard
-	// AfficherBoulier(Boulier, NumeroBoules);
-	// AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
-	// AfficherBoulier(BoulesApresTirage, NumeroBoules);
+	if (BoulesRestantsBoulier < 0) // pour pas afficher des cartes "fausses" dans un boulier maintenant vide
+	{
+		_getch();
+	}
 }
 
 void AffichageMenu()
 {
+	setlocale(LC_CTYPE, "fr-CA");
 	system("cls");
 	cout << "*********************************************    MENU    **************************************************"
-			"\n***\t\t\tT - Tirer un numéro\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
+			"\n***\t\t\tT - Tirer un numero\tB - BINGO!\tQ - Quitter le menu\t\t\t***"
 			"\n***********************************************************************************************************\n";
 
-	cout << "BOULIER\n\n";
+	cout << "\nBOULIER\n\n";
 	AfficherBoulier(Boulier, BoulesRestantsBoulier);
 	cout << "\n\n"
 			"TIRAGE DE LA BOULE:\n";
 	cout << BouleChoisi.Lettre << BouleChoisi.Numero;
-	cout << "\n\nBOULES DÉJÀ TIRÉES\n";
+	cout << "\n\nBOULES DEJA TIREES\n";
 
-	AfficherBoulier(BoulesApresTirage, NumeroBoules);
+	AfficherBoulier(BoulesApresTirage, BoulesDejaTirees);
 	AfficherCarte(CarteBingo);
 }
 
@@ -241,8 +240,6 @@ void CarteInitiale(CaseCarte_s matrice[5][5])
 
 void AfficherCarte(CaseCarte_s matrice[5][5])
 {
-	matrice[0][0].Etat = true;
-	cout << matrice[0][0].BouleCarte.Lettre << matrice[0][0].BouleCarte.Numero << "True? " << (bool)matrice[0][0].Etat;
 	cout << "\n\n\n=====================================\n"
 		"||  B  ||  I  ||  N  ||  G  ||  O  ";
 	for (int colonne = 0; colonne < 5; colonne++) // col 0: B, col 1: I, col 2: N, col 3: G, col 4: O
@@ -256,8 +253,8 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 				cout << "\n";
 			}
 			if (matrice[ligne][colonne].Etat == true)
-						{
-							cout << "|| *" << matrice[ligne][colonne].BouleCarte.Numero << "  ";
+			{
+				cout << "|| "<<"\033[0;95m" << matrice[ligne][colonne].BouleCarte.Numero <<"\033[0m"<< "  ";
 			}
 
 			else
@@ -266,47 +263,25 @@ void AfficherCarte(CaseCarte_s matrice[5][5])
 			}
 		}
 	}
-
-	//cout << "\n\n\n=====================================\n"
-	//		"||  B  ||  I  ||  N  ||  G  ||  O  ||"
-	//	"\n===================================";
-	//for (int ligne = 0; ligne < 5; ligne++) // ligne 0: col 0,1,2,3,4
-	//{
-	//	for (int colonne = 0; colonne < 5; colonne++)
-	//	{
-	//		if (ligne == 0)
-	//		{
-	//			cout << "||";
-	//			//cout << "\n=====================================";
-	//			cout << "\n";
-	//		}
-	//		if (matrice[ligne][colonne].Etat == true)
-	//		{
-	//			cout << "|| *" << matrice[ligne][colonne].BouleCarte.Numero << "  ";
-	//		}
-	//		else
-	//			cout << "|| " << matrice[ligne][colonne].BouleCarte.Numero << "  ";
-	//	}
-	//}
-	//cout << "||"
-	//		"\n=====================================";
+	cout << "||"
+		"\n=====================================";
 }
 
-int BoulierHasard(int &NombreMaximum) // decrementer NombreMaximum pas ICI car tu veux conserver nbmax et decrementer dans une
+int BoulierHasard(int &NombreMaximum)
 {
 	int x = 0;
 	srand(time(NULL));
-	x = (rand() % (NombreMaximum + 1));
-
+	x = (rand() % ((NombreMaximum-1) + 1));
+	cout <<"!!! TEST RANDOM NUMBER IS: "<< x;
 	return x;
 }
 
 BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve)
 {
-	BouleBingo_s Temp = tab[IndiceRandomtrouve]; //-1 car tab[75] existe pas
+	BouleBingo_s Temp = tab[IndiceRandomtrouve];
 	for (int i = IndiceRandomtrouve; i < BoulesRestantsBoulier; i++)
 	{
-		if (i == (BoulesRestantsBoulier - 1))
+		if (i == (BoulesRestantsBoulier - 1)) // 75-1 - 74 - dernier element du tableau devient 0
 		{
 			tab[i].Lettre = " ";
 			tab[i].Numero = 0;
@@ -316,7 +291,6 @@ BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceR
 			tab[i] = tab[i + 1];
 		}
 	}
-	//cout << Temp.Lettre << Temp.Numero;
 	BoulesRestantsBoulier--; // decrementer a 74, 73 ... etc
 	return Temp;
 }
@@ -335,9 +309,7 @@ void TrouverBouleSurCarte(BouleBingo_s BouleVraie, CaseCarte_s matrice[5][5]) //
 		{
 			if (matrice[ligne][colonne].BouleCarte.Lettre == BouleVraie.Lettre && matrice[ligne][colonne].BouleCarte.Numero == BouleVraie.Numero) // si item trouve dans matrice, tamponner
 			{
-				
 				matrice[ligne][colonne].Etat = true;
-				cout << "TEST SI BOULE EST TROUVE SUR CARTE " << matrice[ligne][colonne].BouleCarte.Lettre << matrice[ligne][colonne].BouleCarte.Numero << matrice[ligne][colonne].Etat;
 			}
 		}
 	}
