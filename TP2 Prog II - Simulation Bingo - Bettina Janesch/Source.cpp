@@ -49,7 +49,7 @@ void main(void)
 	do
 	{
 		AffichageMenu();
-		cin >> OptionMenu;
+		OptionMenu = _getche();
 		OptionMenu = toupper(OptionMenu);
 		switch (OptionMenu)
 		{
@@ -57,7 +57,6 @@ void main(void)
 			BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));
 			AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
 			TrouverBouleSurCarte(BouleChoisi, CarteBingo);
-			_getch();
 			if (BoulesRestantsBoulier < 0) // pour pas afficher des cartes "fausses" dans un boulier maintenant vide, quite le programme
 			{
 				OptionMenu = 'Q';
