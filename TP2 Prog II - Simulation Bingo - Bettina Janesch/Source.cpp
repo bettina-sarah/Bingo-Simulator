@@ -35,8 +35,8 @@ void AfficherBoulier(BouleBingo_s tab[], const int taille);									  // affiche
 void BoulesTirees(BouleBingo_s tab[], const int taille);									  // tableau initial vide qui se remplit avec chaque tirage
 void CarteInitiale(CaseCarte_s matrice[5][5]);												  // carte initiale
 void AfficherCarte(CaseCarte_s matrice[5][5]);												  // affiche matrice 5x5 nouvelle
-int BoulierHasard(int &NombreMaximum);														  // pige num�ro au hasard (max 75; apres ca descend)
-BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve); // R�arrange Boulier; boule est retir�e; renvoy� a la fin du tableau et initialiser comme 0
+int BoulierHasard(int &NombreMaximum);														  // pige numero au hasard (max 75; apres ca descend)
+BouleBingo_s RetirerBouleBingo(BouleBingo_s tab[], const int taille, int IndiceRandomtrouve); // Rearrange Boulier; boule est retir�e; renvoy� a la fin du tableau et initialiser comme 0
 void AjouterBouleBingo(BouleBingo_s tab[], int &DejaTire, BouleBingo_s BingoPourAjouter);
 void TrouverBouleSurCarte(BouleBingo_s BouleVraie, CaseCarte_s matrice[5][5]);
 
@@ -56,7 +56,6 @@ void main(void)
 		case 'T':
 			BouleChoisi = RetirerBouleBingo(Boulier, NumeroBoules, BoulierHasard(BoulesRestantsBoulier));
 			AjouterBouleBingo(BoulesApresTirage, BoulesDejaTirees, BouleChoisi);
-			cout << "TEST BOULE CHOISI: " << BouleChoisi.Lettre << BouleChoisi.Numero;
 			TrouverBouleSurCarte(BouleChoisi, CarteBingo);
 			_getch();
 			if (BoulesRestantsBoulier < 0) // pour pas afficher des cartes "fausses" dans un boulier maintenant vide, quite le programme
@@ -72,6 +71,11 @@ void main(void)
 			_getch();
 			break;
 		case 'Q':
+			system("cls");
+			cout << "\n\n\n\n\t\t\t" << "\033[30;44m" << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178)<<char(178) << char(178) << char(178) << char(178);;
+			cout<<"\n\t\t\t"<< char(178)<<"\033[36;40m"<<"FIN DU JEU" << "\033[30;44m"<< char(178);
+			cout << "\n\t\t\t"<<"\033[30;44m" << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178) << char(178);
+
 			_getch();
 		}
 	} while (OptionMenu != 'Q');
